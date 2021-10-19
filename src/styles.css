@@ -12,8 +12,12 @@
 
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 .innerSqaure {
   background-color: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

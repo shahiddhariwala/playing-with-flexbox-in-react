@@ -1,4 +1,5 @@
 import "./styles.css";
+import { useState } from "react";
 
 const colorsArray = [
   "#2c2c54",
@@ -29,11 +30,18 @@ const colorsArray = [
 ];
 
 export default function App() {
+  const [numberOfBoxes, setNumberOfBoxes] = useState(0);
+
+  const onSubmithandler = (event) => {
+    setNumberOfBoxes(document.getElementById("inputNumber").value);
+  };
+
   return (
     <div className="App">
-      <div className="box">{getAllBoxes(2)}</div>
-      <input type="number" />
-      <button onC>submit</button>
+      <div>Boxes: {numberOfBoxes}</div>
+      <div className="box">{getAllBoxes(numberOfBoxes || 0)}</div>
+      <input id="inputNumber" type="number" />
+      <button onClick={onSubmithandler}>submit</button>
     </div>
   );
 }
@@ -42,23 +50,30 @@ const getAllBoxes = (numberOfBoxes = 1) => {
   let boxesArray = [];
 
   const parentHeight = 300;
-  const boxesHeight = parentHeight / numberOfBoxes;
-  console.log(boxesHeight);
+  const boxesHeight = parentHeight / Math.ceil(Math.sqrt(numberOfBoxes));
+  const colorsLength = colorsArray.length;
   for (let x = 0; x < numberOfBoxes; x++) {
     boxesArray.push(
-      <SmallBoxes height={boxesHeight} backgroundColor={"red"} />
+      <SmallBoxes
+        height={boxesHeight}
+        backgroundColor={colorsArray[x % colorsLength]}
+        index={x}
+      />
     );
   }
   return boxesArray;
 };
 
-const SmallBoxes = ({ height, backgroundColor }) => {
+const SmallBoxes = ({ height, backgroundColor, index = 0 }) => {
   return (
     <>
       <div
+        key={"boxes" + index}
         className="innerSqaure"
-        styles={{ height: height, width: height, backgroundColor }}
-      ></div>
+        style={{ height: height, width: height, backgroundColor }}
+      >
+        {index + 1}
+      </div>
     </>
   );
 };
